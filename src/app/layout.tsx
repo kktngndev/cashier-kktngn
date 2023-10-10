@@ -18,10 +18,7 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={`${montserrat.className}`}>
-        <div className="flex flex-1">
-          <Navbar />
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   )

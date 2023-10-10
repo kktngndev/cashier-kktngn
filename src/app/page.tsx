@@ -11,9 +11,12 @@ import CardListComponent from '@/components/card/cardListComponent'
 export default function Home() {
 
   return (
-    <div className='h-screen overflow-auto p-6 w-screen'>
-      <Header />
-      <Dashboard />
+    <div className="flex flex-1">
+      <Navbar />
+      <div className='h-screen overflow-auto p-6 w-screen'>
+        <Header />
+        <Dashboard />
+      </div>
     </div>
   )
 }
