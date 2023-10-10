@@ -9,11 +9,30 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      kategori: {
+        Row: {
+          created_at: string
+          id: number
+          nama_kategori: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          nama_kategori?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          nama_kategori?: string
+        }
+        Relationships: []
+      }
       produk: {
         Row: {
           created_at: string
           harga_produk: number
           id: number
+          kategori: number | null
           keterangan_produk: string | null
           nama_produk: string
         }
@@ -21,6 +40,7 @@ export interface Database {
           created_at?: string
           harga_produk?: number
           id?: number
+          kategori?: number | null
           keterangan_produk?: string | null
           nama_produk?: string
         }
@@ -28,10 +48,18 @@ export interface Database {
           created_at?: string
           harga_produk?: number
           id?: number
+          kategori?: number | null
           keterangan_produk?: string | null
           nama_produk?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "produk_kategori_fkey"
+            columns: ["kategori"]
+            referencedRelation: "kategori"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
