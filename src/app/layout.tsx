@@ -1,3 +1,4 @@
+import Navbar from '@/components/navbar/navbar'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={`${montserrat.className}`}>
-        {children}
+        <div className="flex flex-1">
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   )

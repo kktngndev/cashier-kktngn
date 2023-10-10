@@ -13,7 +13,6 @@ export default function AuthForm() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(e => {
       if (e === 'SIGNED_IN') {
-        router.refresh()
         router.push('/')
       }
     })

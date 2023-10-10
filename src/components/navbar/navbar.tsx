@@ -5,7 +5,7 @@ import { MdHome, MdPayments, MdPieChart, MdPowerSettingsNew } from 'react-icons/
 
 export default function Navbar() {
   return (
-    <nav className='min-h-screen w-32 shadow-lg flex flex-col justify-between'>
+    <nav className='h-screen sticky w-32 shadow-lg flex flex-col justify-between'>
       <div className='flex flex-col gap-6 mt-3 items-center'>
         <NavbarLink icon={<MdHome />} text='Home' link='/' />
         <NavbarLink icon={<MdPayments />} text='Transaksi' link='/transaksi' />
