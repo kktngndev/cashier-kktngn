@@ -1,5 +1,6 @@
-import Image from 'next/image'
+import type { Metadata } from 'next'
 import Navbar from '@/components/navbar/navbar'
+import Greetings from '@/utils/greetings'
 import CardComponent from '@/components/card/cardComponent'
 import { MdPointOfSale } from 'react-icons/md'
 import { RiCupFill } from 'react-icons/ri'
@@ -7,6 +8,11 @@ import moment from 'moment'
 import 'moment/locale/id'
 import CardChartComponent from '@/components/card/cardChartComponent'
 import CardListComponent from '@/components/card/cardListComponent'
+
+export const metadata: Metadata = {
+  title: 'Cashier',
+  description: 'Main menu',
+}
 
 export default function Home() {
 
@@ -24,7 +30,7 @@ export default function Home() {
 function Header() {
   return (
     <header className='flex items-center justify-between text-hacienda-800'>
-      <h1 className='font-bold text-3xl'>Selamat Datang!</h1>
+      <h1 className='font-bold text-3xl'>{ Greetings() }!</h1>
       <p className='font-bold text-xl'>{moment().locale('id').format('dddd, D MMMM YYYY')}</p>
     </header>
   )
