@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
+import { lazy, Suspense } from 'react'
 import Navbar from '@/components/navbar/navbar'
 import Greetings from '@/utils/greetings'
-import CardComponent from '@/components/card/cardComponent'
+import LoaderComponent from '@/components/loaderComponent'
 import { MdPointOfSale } from 'react-icons/md'
 import { RiCupFill } from 'react-icons/ri'
 import moment from 'moment'
 import 'moment/locale/id'
-import CardChartComponent from '@/components/card/cardChartComponent'
-import CardListComponent from '@/components/card/cardListComponent'
+
+const CardChartComponent = lazy(() => import('@/components/card/cardChartComponent'))
+const CardListComponent = lazy(() => import('@/components/card/cardListComponent'))
+const CardComponent = lazy(() => import('@/components/card/cardComponent'))
 
 export const metadata: Metadata = {
   title: 'Cashier',
@@ -20,8 +23,10 @@ export default function Home() {
     <div className="flex flex-1">
       <Navbar />
       <div className='h-screen overflow-auto p-6 w-screen'>
-        <Header />
-        <Dashboard />
+        <Suspense fallback={ <LoaderComponent /> }>
+          <Header />
+          <Dashboard />
+        </Suspense>
       </div>
     </div>
   )
@@ -30,7 +35,7 @@ export default function Home() {
 function Header() {
   return (
     <header className='flex items-center justify-between text-hacienda-800'>
-      <h1 className='font-bold text-3xl'>{ Greetings() }!</h1>
+      <h1 className='font-bold text-3xl'>{Greetings()}!</h1>
       <p className='font-bold text-xl'>{moment().locale('id').format('dddd, D MMMM YYYY')}</p>
     </header>
   )

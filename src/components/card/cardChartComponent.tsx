@@ -8,15 +8,15 @@ Chart.register()
 export default function CardChartComponent() {
   return (
     <div className='w-[750px] h-fit bg-hacienda-100 font-semibold rounded-xl p-5'>
-      <h1 className='text-xl text-hacienda-900'>Penjualan per bulan</h1>
+      <h1 className='text-xl text-hacienda-900'>Penjualan per hari</h1>
       <div className='h-72 w-full rounded-xl mt-5 flex justify-center items-center'>
         <Bar
           data={{
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+            labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
             datasets: [
               {
                 label: 'Penjualan',
-                data: [1278, 1365, 1002, 1128, 1331, 1297],
+                data: [1278, 1365, 1002, 1128, 1331, 1297, 1281],
                 backgroundColor: '#826c11',
                 borderColor: '#826c11',
               },
