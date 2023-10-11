@@ -16,7 +16,7 @@ export default function CardChartComponent() {
             datasets: [
               {
                 label: 'Penjualan',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [1278, 1365, 1002, 1128, 1331, 1297],
                 backgroundColor: '#826c11',
                 borderColor: '#826c11',
               },

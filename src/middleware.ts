@@ -8,6 +8,7 @@ export async function middleware(req: NextRequest){
   const supabase = createMiddlewareClient({ req, res });
 
   const { data: { user } } = await supabase.auth.getUser();
+  const { data: { session }, error } = await supabase.auth.getSession();
 
   //* Cek kondisi jika user login maka bisa akses ke menu utama
   if(user && req.nextUrl.pathname === '/login'){
@@ -16,6 +17,11 @@ export async function middleware(req: NextRequest){
 
   //* Cek kondisi jika user belum login maka tidak bisa akses ke menu utama dan akan diarahkan ke menu login
   if(!user && req.nextUrl.pathname !== '/login'){
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
+
+  if(error || !session  && req.nextUrl.pathname !== '/login'){
+    res.cookies.delete('sb-yirtqoihduklaswfrrpt-auth-token')
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
