@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest){
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if(error || !session  && req.nextUrl.pathname !== '/login'){
+  if(error){
     res.cookies.delete('sb-yirtqoihduklaswfrrpt-auth-token')
     return NextResponse.redirect(new URL('/login', req.url));
   }
