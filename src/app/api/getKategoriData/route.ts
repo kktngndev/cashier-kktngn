@@ -9,7 +9,6 @@ export async function GET(){
     return NextResponse.json(kategori);
   }
   
-
   //* Cek jika ada error maka akan diarahkan ke menu utama
   if(error){
     return NextResponse.error();
