@@ -41,11 +41,19 @@ function Header() {
   )
 }
 
-function Dashboard() {
+async function Dashboard() {
+  const balance = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/payment/checkBalance`, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }).then(res => res.json());
+  console.log(balance);
+  
+
   return (
     <div className='mt-7 flex flex-col gap-6'>
       <div className='flex gap-4'>
-        <CardComponent classname='bg-hacienda-700 text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2='Rp. 12.000.000' />
+        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2={ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR'}).format(balance.balance)} />
         <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={<RiCupFill />} text='Jumlah pesanan hari ini' text2='196' />
       </div>
       <div className='flex gap-4'>
@@ -55,4 +63,3 @@ function Dashboard() {
     </div>
   )
 }
-
