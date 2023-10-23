@@ -16,11 +16,11 @@ export async function middleware(req: NextRequest){
   }
 
   //* Cek kondisi jika user belum login maka tidak bisa akses ke menu utama dan akan diarahkan ke menu login
-  if(!user && req.nextUrl.pathname !== '/login'){
+  if(!user && req.nextUrl.pathname !== '/login' || !session){
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if(error){
+  if(!session){
     res.cookies.delete('sb-yirtqoihduklaswfrrpt-auth-token')
     return NextResponse.redirect(new URL('/login', req.url));
   }
