@@ -14,7 +14,6 @@
     "@supabase/auth-ui-react": "^0.4.5",
     "@supabase/auth-ui-shared": "^0.1.7",
     "@supabase/supabase-js": "^2.38.0",
-    "axios": "^1.5.1",
     "chart.js": "^4.4.0",
     "moment": "^2.29.4",
     "next": "13.5.4",
@@ -25,7 +24,8 @@
     "react-icons": "^4.11.0",
     "react-spinners": "^0.13.8",
     "recoil": "^0.7.7",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
     "@types/node": "^20",
