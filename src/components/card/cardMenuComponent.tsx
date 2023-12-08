@@ -21,7 +21,7 @@ export default function CardMenuComponent({ name, price }: Props) {
   }
 
   return (
-    <div className='w-64 h-56 p-3 rounded-xl border-2 flex items-start flex-col justify-between border-hacienda-900 bg-hacienda-100 shadow-lg'>
+    <div id={ name } className={`w-64 h-56 p-3 rounded-xl border-2 flex items-start flex-col justify-between border-hacienda-900 shadow-lg ${count > 0 ? 'border-4 bg-hacienda-600' : 'bg-hacienda-100'}`}>
       <div>
         <h1 className='font-bold text-hacienda-950 text-2xl'>{ name }</h1>
         <h2 className='mt-3 font-semibold text-hacienda-800 text-xl'>Rp. { price }</h2>
