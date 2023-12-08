@@ -20,7 +20,7 @@ export default function Page() {
     <div className='flex flex-1'>
       <Navbar />
       <div className='w-screen grid grid-cols-12'>
-        <div className='h-screen overflow-auto col-span-8 p-6 scrollbar-hide'>
+        <div className='h-screen overflow-auto col-span-9 p-6 scrollbar-hide'>
           <div className='h-16 w-full flex gap-7 items-center'>
             <CardLabelComponent name='Semua' onChange={(e) => setCheckedCategory(e.target.checked)}/>
             {
@@ -31,7 +31,7 @@ export default function Page() {
           </div>
           <ListCardCategoriesTrxComponent />
         </div>
-        <div className='h-screen col-span-4 bg-hacienda-200 shadow-lg'>
+        <div className='h-screen col-span-3 bg-hacienda-200 shadow-lg'>
           2
         </div>
       </div>
