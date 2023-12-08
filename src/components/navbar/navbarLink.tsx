@@ -1,21 +1,27 @@
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 type NavbarLinkProps = {
   handleClick?: () => void
   text?: string
   icon?: React.ReactNode
-  link : string
+  link: string
 }
 
 export default function NavbarLink({ handleClick, text, icon, link }: NavbarLinkProps) {
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(false);
+  const pathname = usePathname();
+
+  React.useEffect(() => {
+    pathname === link ? setIsActive(true) : setIsActive(false);
+  }, [pathname, link])
 
   return (
     <button onClick={handleClick}>
-      <Link href={ link } className='h-16 w-16 flex flex-col mt-3 items-center justify-center rounded-lg text-xs bg-hacienda-100'>
-        <div className='text-xl'>
+      <Link href={link} className={`${isActive ? `bg-hacienda-100 border-hacienda-500`: `border-hacienda-300`} h-24 w-24 flex flex-col items-center justify-center rounded-xl text-sm text-hacienda-900 font-semibold border-2 hover:bg-hacienda-800 hover:text-hacienda-50 transition-all`}>
+        <div className='text-3xl'>
           {icon}
         </div>
         {text}

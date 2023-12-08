@@ -6,7 +6,6 @@ export async function GET(){
   
   //* Cek jika data produk berhasil diambil
   if(produk){
-    console.log(produk);
     return NextResponse.json(produk);
   }
   
