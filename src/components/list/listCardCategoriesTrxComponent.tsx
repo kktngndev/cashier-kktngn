@@ -7,14 +7,21 @@ import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
 
 export default function ListCardCategoriesTrxComponent() {
   const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
+
+  function numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  }
   
   const getData = async () => {
     const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getProdukData`)
     const res = await data.json()
     return {
       data: res,
-      isKopi: res.filter((item: any) => item.kategori.nama_kategori === 'Kopi'),
-      isNonKopi: res.filter((item: any) => item.kategori.nama_kategori === 'Non Kopi'),
+      isPostModern: res.filter((item: any) => item.kategori.nama_kategori === 'Post Modernism'),
+      isKopiKita: res.filter((item: any) => item.kategori.nama_kategori === 'Kopi Kita'),
+      isNonCoffee: res.filter((item: any) => item.kategori.nama_kategori === 'Non Coffee'),
+      isMainCourse: res.filter((item: any) => item.kategori.nama_kategori === 'Main Course'),
+      isSnack: res.filter((item: any) => item.kategori.nama_kategori === 'Snack'),
     }
   }
 
@@ -24,12 +31,24 @@ export default function ListCardCategoriesTrxComponent() {
     refetchInterval: 1000
   })
 
-  const isCoffee = data?.isKopi?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
-    <CardMenuComponent key={index} name={item.nama_produk} price={item.harga_produk} />
+  const isPostMod = data?.isPostModern?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
+    <CardMenuComponent key={index} name={item.nama_produk} price={numberWithCommas(item.harga_produk)} />
   ))
 
-  const isNonCoffee = data?.isNonKopi?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
-    <CardMenuComponent key={index} name={item.nama_produk} price={item.harga_produk} />
+  const isKopiKita = data?.isKopiKita?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
+    <CardMenuComponent key={index} name={item.nama_produk} price={numberWithCommas(item.harga_produk)} />
+  ))
+
+  const isNonCoffee = data?.isNonCoffee?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
+    <CardMenuComponent key={index} name={item.nama_produk} price={numberWithCommas(item.harga_produk)} />
+  ))
+
+  const isMainCourse = data?.isMainCourse?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
+    <CardMenuComponent key={index} name={item.nama_produk} price={numberWithCommas(item.harga_produk)} />
+  ))
+
+  const isSnack = data?.isSnack?.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
+    <CardMenuComponent key={index} name={item.nama_produk} price={numberWithCommas(item.harga_produk)} />
   ))
 
   return (
@@ -38,8 +57,8 @@ export default function ListCardCategoriesTrxComponent() {
         isLoading && <div>Loading...</div>
       }
       {
-        data && checkedCategory === 'Kopi' ? isCoffee : checkedCategory === 'Non Kopi' ? isNonCoffee : data?.data.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
-          <CardMenuComponent key={index} name={item.nama_produk} price={item.harga_produk} />
+        data && checkedCategory === 'Post Modernism' ? isPostMod : checkedCategory === 'Kopi Kita' ? isKopiKita : checkedCategory === 'Non Coffee' ? isNonCoffee : checkedCategory === 'Main Course' ? isMainCourse : checkedCategory === 'Snack' ? isSnack : data?.data.map((item: { nama_produk: string, harga_produk: number, id: number }, index: number) => (
+          <CardMenuComponent key={index} name={item.nama_produk} price={numberWithCommas(item.harga_produk)} />
         ))
       }
     </div>
