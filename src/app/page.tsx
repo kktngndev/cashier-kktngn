@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { lazy, Suspense } from 'react'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import Navbar from '@/components/navbar/navbar'
 import Greetings from '@/utils/greetings'
 import LoaderComponent from '@/components/loaderComponent'
@@ -7,6 +9,7 @@ import { MdPointOfSale } from 'react-icons/md'
 import { RiCupFill } from 'react-icons/ri'
 import moment from 'moment'
 import 'moment/locale/id'
+import { Database } from '../../types/database'
 
 const CardChartComponent = lazy(() => import('@/components/card/cardChartComponent'))
 const CardListComponent = lazy(() => import('@/components/card/cardListComponent'))
@@ -17,7 +20,17 @@ export const metadata: Metadata = {
   description: 'Main menu',
 }
 
-export default function Home() {
+export default async function Home() {
+  const cookiesStore = cookies()
+  const supabase = createServerComponentClient<Database>({
+    cookies: () => cookiesStore,
+  })
+
+  const { data: { session } } = await supabase.auth.getSession()
+
+  if (!session) {
+    window.location.href = '/login'
+  }
 
   return (
     <div className="flex flex-1">
@@ -47,13 +60,11 @@ async function Dashboard() {
       'Content-Type': 'application/json',
     }
   }).then(res => res.json());
-  console.log(balance);
-  
 
   return (
     <div className='mt-7 flex flex-col gap-6'>
       <div className='flex gap-4'>
-        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2={ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR'}).format(balance.balance)} />
+        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(balance.balance)} />
         <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={<RiCupFill />} text='Jumlah pesanan hari ini' text2='196' />
       </div>
       <div className='flex gap-4'>
