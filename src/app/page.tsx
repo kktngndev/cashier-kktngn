@@ -48,8 +48,8 @@ export default async function Home() {
 function Header() {
   return (
     <header className='flex items-center justify-between text-hacienda-800'>
-      <h1 className='font-bold text-3xl'>{Greetings()}!</h1>
-      <p className='font-bold text-xl'>{moment().locale('id').format('dddd, D MMMM YYYY')}</p>
+      <h1 className='font-bold text-3xl'>{ Greetings() }!</h1>
+      <p className='font-bold text-xl'>{ moment().locale('id').format('dddd, D MMMM YYYY') }</p>
     </header>
   )
 }
@@ -64,8 +64,8 @@ async function Dashboard() {
   return (
     <div className='mt-7 flex flex-col gap-6'>
       <div className='flex gap-4'>
-        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(balance.balance)} />
-        <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={<RiCupFill />} text='Jumlah pesanan hari ini' text2='196' />
+        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={ <MdPointOfSale /> } text='Pendapatan hari ini' text2={ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(balance.balance) } />
+        <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={ <RiCupFill /> } text='Jumlah pesanan hari ini' text2='196' />
       </div>
       <div className='flex gap-4'>
         <CardChartComponent />
