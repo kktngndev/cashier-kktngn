@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-input[type="radio"]{
+input.categoryRadio[type="radio"] {
   @apply hidden;
 }
 
@@ -10,7 +10,19 @@ input[type="radio"]{
   @apply cursor-pointer flex items-center justify-center h-16 w-48 border-2 truncate rounded-2xl border-hacienda-950 bg-hacienda-200 hover:bg-hacienda-700 transition-all text-hacienda-950 hover:text-white font-bold;
 }
 
-input[type="radio"]:checked + .trxCategoryLabel{
+input.categoryRadio[type="radio"]:checked + .trxCategoryLabel{
+  @apply bg-hacienda-600 text-hacienda-950;
+}
+
+input.metodeBayarRadio[type="radio"] {
+  @apply hidden;
+}
+
+.metodeBayarLabel{
+  @apply cursor-pointer flex items-center justify-center h-16 w-24 border-2 truncate rounded-2xl border-hacienda-950 bg-hacienda-200 hover:bg-hacienda-700 transition-all text-hacienda-950 hover:text-white font-bold;
+}
+
+input.metodeBayarRadio[type="radio"]:checked + .metodeBayarLabel{
   @apply bg-hacienda-600 text-hacienda-950;
 }
 
