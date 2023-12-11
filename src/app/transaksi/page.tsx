@@ -12,7 +12,35 @@ export default function Page() {
   const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
   const [categoryData, setCategoryData] = useState([])
   const [cartItem, setCartItem] = useRecoilState(cartItemAtom) as any[]
+  const [paymentMethod, setPaymentMethod] = useState(null)
   const total = useRecoilValue(cartTotalAtom)
+
+  const cashlessPayment = useCallback(async () => {
+    if (cartItem.length > 0) {
+      const data = {
+        amount: total,
+        title: 'Waroeng Tjap Kakitangan QRIS Payment'
+      }
+      const payment = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/payment/createPaymentCashless`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+        .catch(err => console.log(err))
+      console.log(payment);
+    }
+    else {
+      alert('Item Kosong, Silahkan Pilih Item Terlebih Dahulu')
+    }
+  }, [cartItem, total])
+
+  const handlePaymentMethod = useCallback(() => {
+    paymentMethod === 'tunai' ? console.log('tunai') : cashlessPayment()
+  }, [paymentMethod, cashlessPayment])
+
+
 
   useEffect(() => {
     async function getCategoryData() {
@@ -40,12 +68,12 @@ export default function Page() {
           <div className='border-b-2 p-2 mx-4 border-hacienda-950'>
             <h1 className='text-2xl font-bold'>Keranjang</h1>
           </div>
-          <div className='mt-7 px-3'>
+          <div className='mt-7 px-3 overflow-auto scrollbar h-64'>
             {
               cartItem.length > 0 ? cartItem.map((item: any, index: number) => (
                 <CardCartComponent key={index} item={item} />
               ))
-              : <p className='text-center text-xl font-semibold'>Keranjang Kosong</p>
+                : <p className='text-center text-xl font-semibold'>Keranjang Kosong</p>
             }
           </div>
           <div className='relative mt-6 p-3 bottom-0 flex flex-col justify-between gap-6 h-[350px] border-t-2 border-hacienda-950'>
@@ -56,14 +84,20 @@ export default function Page() {
             <div>
               <h4 className='font-semibold text-xl text-center'>Metode Pembayaran</h4>
               <div className='flex gap-8 mt-4 justify-center'>
-                <input type='radio' className='metodeBayarRadio' name='Bayar' id='Tunai' value='tunai' />
+                <input type='radio' className='metodeBayarRadio' name='Bayar' id='Tunai' value='tunai' onChange={(e: any) => setPaymentMethod(e.target.value)} />
                 <label className='metodeBayarLabel' htmlFor='Tunai'>Tunai</label>
-                <input type='radio' className='metodeBayarRadio' name='Bayar' id='Non Tunai' value='nontunai' />
+                <input type='radio' className='metodeBayarRadio' name='Bayar' id='Non Tunai' value='nontunai' onChange={(e: any) => setPaymentMethod(e.target.value)} />
                 <label className='metodeBayarLabel' htmlFor='Non Tunai'>Non Tunai</label>
               </div>
             </div>
             <div className='w-full flex justify-center mt-5'>
-              <button className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold hover:bg-hacienda-600 hover:text-hacienda-900'>Proses</button>
+              {
+                paymentMethod !== null ? (
+                  <button className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold hover:bg-hacienda-600 hover:text-hacienda-900' onClick={handlePaymentMethod}>Proses</button>
+                ) : (
+                  <button disabled className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold opacity-80' onClick={handlePaymentMethod}>Proses</button>
+                )
+              }
             </div>
           </div>
         </div>
