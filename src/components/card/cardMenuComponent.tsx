@@ -27,7 +27,6 @@ export default function CardMenuComponent({ name, price }: Props) {
       setTotal((prevTotal: any) => (prevTotal + price))
       setIsAdded(!isAdded)
     }
-    console.log(cartItem);
   }, [cartItem, cartIndex, isAdded, name, price, setCartItem, setTotal])
 
   const isAddedToCart = cartItem.some((item: any) => item.nama_produk === name)

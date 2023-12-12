@@ -50,9 +50,9 @@ export default function CardCartComponent({ item }: Props) {
   },[cartItem, cartIndex])
 
   return (
-    <div className='grid grid-cols-2 border-t border-b p-3 border-hacienda-800 font-semibold text-xl gap-16'>
+    <div className='grid grid-cols-1 border-t border-b p-3 mb-4 border-hacienda-800 font-semibold text-xl gap-3'>
       {item.nama_produk}
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-end gap-5 items-center'>
         <button className='w-8 h-8 bg-hacienda-950 rounded-xl text-white font-bold border-2 border-hacienda-800 transition hover:bg-hacienda-600' onClick={handleDecrement}>
           -
         </button>
