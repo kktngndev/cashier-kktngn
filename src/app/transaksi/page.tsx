@@ -4,18 +4,24 @@ import Navbar from '@/components/navbar/navbar'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
 import { cartItemAtom, cartTotalAtom } from '../../../atoms/cartAtom'
+import { SyncLoader } from 'react-spinners'
 import ListCardCategoriesTrxComponent from '@/components/list/listCardCategoriesTrxComponent'
 import CardLabelComponent from '@/components/card/cardLabelComponent'
 import CardCartComponent from '@/components/card/cardCartComponent'
+import ModalComponent from '@/components/modalComponent'
+import CashPaymentComponent from '@/components/cashPaymentComponent'
 
 export default function Page() {
   const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
   const [categoryData, setCategoryData] = useState([])
   const [cartItem, setCartItem] = useRecoilState(cartItemAtom) as any[]
   const [paymentMethod, setPaymentMethod] = useState(null)
+  const [modal, setModal] = useState(false)
+  const [isProcess, setIsProcess] = useState(false)
   const total = useRecoilValue(cartTotalAtom)
 
   const cashlessPayment = useCallback(async () => {
+    setIsProcess(true)
     if (cartItem.length > 0) {
       const data = {
         amount: total,
@@ -28,17 +34,37 @@ export default function Page() {
         },
         body: JSON.stringify(data)
       }).then(res => res.json())
-        .catch(err => console.log(err))
-      console.log(payment);
+        .catch(err => console.error(err))
+
+      if (payment) {
+        window.open(payment.payment_url, '_blank')
+      }
+      setIsProcess(false)
     }
     else {
       alert('Item Kosong, Silahkan Pilih Item Terlebih Dahulu')
+      setIsProcess(false)
     }
   }, [cartItem, total])
 
+  const cashPayment = useCallback(async () => {
+    setIsProcess(true)
+    if(cartItem.length > 0 && total !== 0){
+      setModal(true)
+    }
+    else{
+      alert('Item Kosong, Silahkan Pilih Item Terlebih Dahulu')
+    }
+  },[cartItem, total])
+
   const handlePaymentMethod = useCallback(() => {
-    paymentMethod === 'tunai' ? console.log('tunai') : cashlessPayment()
-  }, [paymentMethod, cashlessPayment])
+    paymentMethod === 'tunai' ? cashPayment() : cashlessPayment()
+  }, [paymentMethod, cashlessPayment, cashPayment])
+
+  const handleCloseModal = () => {
+    setModal(false)
+    setIsProcess(false)
+  }
 
 
 
@@ -64,11 +90,11 @@ export default function Page() {
           </div>
           <ListCardCategoriesTrxComponent />
         </div>
-        <div className='h-screen overflow-auto scrollbar-hide col-span-3 bg-hacienda-200 shadow-lg p-3 w-full mx-auto'>
+        <div className='h-screen overflow-auto scrollbar-hide py-12 justify-between flex flex-col col-span-3 bg-hacienda-200 shadow-lg p-3 w-full mx-auto'>
           <div className='border-b-2 p-2 mx-4 border-hacienda-950'>
             <h1 className='text-2xl font-bold'>Keranjang</h1>
           </div>
-          <div className='mt-7 px-3 overflow-auto scrollbar h-64'>
+          <div className='mt-7 px-3 overflow-auto scrollbar h-96'>
             {
               cartItem.length > 0 ? cartItem.map((item: any, index: number) => (
                 <CardCartComponent key={index} item={item} />
@@ -83,25 +109,35 @@ export default function Page() {
             </div>
             <div>
               <h4 className='font-semibold text-xl text-center'>Metode Pembayaran</h4>
-              <div className='flex gap-8 mt-4 justify-center'>
+              <div className='flex flex-col gap-8 mt-4 justify-center'>
                 <input type='radio' className='metodeBayarRadio' name='Bayar' id='Tunai' value='tunai' onChange={(e: any) => setPaymentMethod(e.target.value)} />
                 <label className='metodeBayarLabel' htmlFor='Tunai'>Tunai</label>
                 <input type='radio' className='metodeBayarRadio' name='Bayar' id='Non Tunai' value='nontunai' onChange={(e: any) => setPaymentMethod(e.target.value)} />
-                <label className='metodeBayarLabel' htmlFor='Non Tunai'>Non Tunai</label>
+                <label className='metodeBayarLabel' htmlFor='Non Tunai'>Non Tunai (QRIS)</label>
               </div>
             </div>
             <div className='w-full flex justify-center mt-5'>
               {
-                paymentMethod !== null ? (
-                  <button className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold hover:bg-hacienda-600 hover:text-hacienda-900' onClick={handlePaymentMethod}>Proses</button>
+                paymentMethod !== null ? isProcess ? (
+                  <button disabled className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold opacity-80 flex items-center justify-center'>
+                    <SyncLoader color='#fff' size={8} />
+                  </button>
                 ) : (
-                  <button disabled className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold opacity-80' onClick={handlePaymentMethod}>Proses</button>
+                  <button className='w-full h-16 bg-hacienda-800 rounded-xl border transition border-hacienda-950 text-white font-semibold hover:bg-hacienda-600 hover:text-hacienda-900' onClick={handlePaymentMethod}>Proses</button>
+                ) : (
+                  <button disabled className='w-full h-16 bg-hacienda-700 rounded-xl border transition border-hacienda-950 text-white font-semibold opacity-80'>Proses</button>
                 )
               }
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {
+        modal && 
+        <ModalComponent>
+          <CashPaymentComponent onClick={handleCloseModal}/>
+        </ModalComponent>
+      }
+    </div >
   )
 }
