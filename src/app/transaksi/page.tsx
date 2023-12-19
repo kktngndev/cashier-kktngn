@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
 import { cartItemAtom, cartTotalAtom } from '../../../atoms/cartAtom'
 import { SyncLoader } from 'react-spinners'
+import { v4 as uuidv4 } from 'uuid'
 import ListCardCategoriesTrxComponent from '@/components/list/listCardCategoriesTrxComponent'
 import CardLabelComponent from '@/components/card/cardLabelComponent'
 import CardCartComponent from '@/components/card/cardCartComponent'
@@ -22,10 +23,12 @@ export default function Page() {
 
   const cashlessPayment = useCallback(async () => {
     setIsProcess(true)
+    const name = uuidv4()
     if (cartItem.length > 0) {
       const data = {
         amount: total,
-        title: 'Waroeng Tjap Kakitangan QRIS Payment'
+        title: 'Waroeng Tjap Kakitangan QRIS Payment',
+        name
       }
       const payment = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/payment/createPaymentCashless`, {
         method: 'POST',
@@ -37,6 +40,8 @@ export default function Page() {
         .catch(err => console.error(err))
 
       if (payment) {
+        console.log(payment);
+        
         window.open(payment.payment_url, '_blank')
       }
       setIsProcess(false)

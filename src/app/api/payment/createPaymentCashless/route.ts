@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest){
-  const { amount, title } = await req.json();
+  const { amount, title, name } = await req.json();
 
   const createQRIS = await fetch(`${process.env.FLIP_API_URL}/pwf/bill`, {
     headers: {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest){
       amount,
       title,
       'type': 'SINGLE',
-      'sender_name': 'WTK Customer',
+      'sender_name': name,
       'sender_email': 'customer@kakitangan.biz.id',
       'sender_bank': 'qris',
       'sender_bank_type': 'wallet_account',
