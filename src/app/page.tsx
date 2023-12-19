@@ -1,19 +1,16 @@
 import type { Metadata } from 'next'
-import { lazy, Suspense } from 'react'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Navbar from '@/components/navbar/navbar'
 import Greetings from '@/utils/greetings'
-import LoaderComponent from '@/components/loaderComponent'
 import { MdPointOfSale } from 'react-icons/md'
 import { RiCupFill } from 'react-icons/ri'
 import moment from 'moment'
 import 'moment/locale/id'
 import { Database } from '../../types/database'
-
-const CardChartComponent = lazy(() => import('@/components/card/cardChartComponent'))
-const CardListComponent = lazy(() => import('@/components/card/cardListComponent'))
-const CardComponent = lazy(() => import('@/components/card/cardComponent'))
+import CardChartComponent from '@/components/card/cardChartComponent'
+import CardListComponent from '@/components/card/cardListComponent'
+import CardComponent from '@/components/card/cardComponent'
 
 export const metadata: Metadata = {
   title: 'Cashier',
@@ -36,10 +33,8 @@ export default async function Home() {
     <div className="flex flex-1">
       <Navbar />
       <div className='h-screen overflow-auto p-6 w-screen'>
-        <Suspense fallback={ <LoaderComponent /> }>
-          <Header />
-          <Dashboard />
-        </Suspense>
+        <Header />
+        <Dashboard />
       </div>
     </div>
   )
@@ -48,8 +43,8 @@ export default async function Home() {
 function Header() {
   return (
     <header className='flex items-center justify-between text-hacienda-800'>
-      <h1 className='font-bold text-3xl'>{ Greetings() }!</h1>
-      <p className='font-bold text-xl'>{ moment().locale('id').format('dddd, D MMMM YYYY') }</p>
+      <h1 className='font-bold text-3xl'>{Greetings()}!</h1>
+      <p className='font-bold text-xl'>{moment().locale('id').format('dddd, D MMMM YYYY')}</p>
     </header>
   )
 }
@@ -59,13 +54,13 @@ async function Dashboard() {
     headers: {
       'Content-Type': 'application/json',
     }
-  }).then(res => res.json());
+  }).then(res => res.json());  
 
   return (
     <div className='mt-7 flex flex-col gap-6'>
       <div className='flex gap-4'>
-        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={ <MdPointOfSale /> } text='Pendapatan hari ini' text2={ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(balance.balance) } />
-        <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={ <RiCupFill /> } text='Jumlah pesanan hari ini' text2='196' />
+        <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(balance.balance)} />
+        <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={<RiCupFill />} text='Jumlah pesanan hari ini' text2='196' />
       </div>
       <div className='flex gap-4'>
         <CardChartComponent />

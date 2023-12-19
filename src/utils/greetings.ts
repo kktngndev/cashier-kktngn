@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export default function Greetings(){
-  let hours = parseInt(moment().format('HH'));
+  let hours = parseInt(moment().local().format('HH'));
 
   if(hours >= 0 && hours <= 11){
     return "Selamat Pagi";

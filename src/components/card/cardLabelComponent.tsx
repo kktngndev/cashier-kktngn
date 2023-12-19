@@ -8,8 +8,7 @@ export default function CardLabelComponent({ name, onChange }: Props) {
 
   return (
     <>
-      <input type='radio' onChange={onChange} value={name} id={ name } name="label" >
-      </input>
+      <input type='radio' className="categoryRadio" onChange={onChange} value={name} id={ name } name="label" />
       <label className="trxCategoryLabel" htmlFor={ name }>{ name }</label>
     </>
   )
