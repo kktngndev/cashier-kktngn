@@ -4,7 +4,7 @@ type Props = {
   onChange?: (params: any) => void
 }
 
-export default function CardLabelComponent({ name, onChange }: Props) {
+export function CardLabelComponent({ name, onChange }: Props) {
 
   return (
     <>

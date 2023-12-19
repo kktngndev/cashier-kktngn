@@ -6,7 +6,7 @@ type Props = {
   item: { nama_produk: string, harga_produk: number }
 }
 
-export default function CardCartComponent({ item }: Props) {
+export function CardCartComponent({ item }: Props) {
   const [cartItem, setCartItem] = useRecoilState(cartItemAtom) as any[]
   const [total, setTotal] = useRecoilState(cartTotalAtom)
   const cartIndex = cartItem.findIndex((cart: any) => cart.nama_produk === item.nama_produk)

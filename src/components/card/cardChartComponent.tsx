@@ -5,7 +5,7 @@ import { Bar } from 'react-chartjs-2'
 
 Chart.register()
 
-export default function CardChartComponent() {
+export function CardChartComponent() {
   return (
     <div className='w-[750px] h-fit bg-hacienda-100 font-semibold rounded-xl p-5'>
       <h1 className='text-xl text-hacienda-900'>Penjualan per hari</h1>

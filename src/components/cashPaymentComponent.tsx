@@ -7,7 +7,7 @@ type Props = {
   onClick: () => void
 }
 
-export default function CashPaymentComponent({ onClick }: Props) {
+export function CashPaymentComponent({ onClick }: Props) {
   const total = useRecoilValue(cartTotalAtom)
   const [cash, setCash] = useState(0)
   const [change, setChange] = useState(0)

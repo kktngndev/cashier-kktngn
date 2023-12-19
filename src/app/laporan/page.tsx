@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import Navbar from '@/components/navbar/navbar'
+import { Navbar } from '@/components/navbar'
 import DataTable from 'react-data-table-component'
 
 export default function Page() {

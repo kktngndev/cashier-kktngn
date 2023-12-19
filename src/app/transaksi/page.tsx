@@ -1,16 +1,16 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
-import Navbar from '@/components/navbar/navbar'
+import { Navbar } from '@/components/navbar'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
 import { cartItemAtom, cartTotalAtom } from '../../../atoms/cartAtom'
 import { SyncLoader } from 'react-spinners'
 import { v4 as uuidv4 } from 'uuid'
-import ListCardCategoriesTrxComponent from '@/components/list/listCardCategoriesTrxComponent'
-import CardLabelComponent from '@/components/card/cardLabelComponent'
-import CardCartComponent from '@/components/card/cardCartComponent'
-import ModalComponent from '@/components/modalComponent'
-import CashPaymentComponent from '@/components/cashPaymentComponent'
+import { ListCardCategoriesTrxComponent } from '@/components/list'
+import { CardLabelComponent } from '@/components/card'
+import { CardCartComponent } from '@/components/card'
+import { ModalComponent } from '@/components'
+import { CashPaymentComponent } from '@/components'
 
 export default function Page() {
   const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
@@ -41,7 +41,7 @@ export default function Page() {
 
       if (payment) {
         console.log(payment);
-        
+
         window.open(payment.payment_url, '_blank')
       }
       setIsProcess(false)
@@ -54,13 +54,13 @@ export default function Page() {
 
   const cashPayment = useCallback(async () => {
     setIsProcess(true)
-    if(cartItem.length > 0 && total !== 0){
+    if (cartItem.length > 0 && total !== 0) {
       setModal(true)
     }
-    else{
+    else {
       alert('Item Kosong, Silahkan Pilih Item Terlebih Dahulu')
     }
-  },[cartItem, total])
+  }, [cartItem, total])
 
   const handlePaymentMethod = useCallback(() => {
     paymentMethod === 'tunai' ? cashPayment() : cashlessPayment()
@@ -138,9 +138,9 @@ export default function Page() {
         </div>
       </div>
       {
-        modal && 
+        modal &&
         <ModalComponent>
-          <CashPaymentComponent onClick={handleCloseModal}/>
+          <CashPaymentComponent onClick={handleCloseModal} />
         </ModalComponent>
       }
     </div >

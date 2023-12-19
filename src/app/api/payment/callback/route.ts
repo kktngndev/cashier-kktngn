@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,9 +7,6 @@ export async function POST(req: NextRequest) {
     console.log(res);
 
     if (res.status === 'SUCCESSFUL') {
-      const { data: transaksi, error } = await supabase.from('transaksi').insert([
-        
-      ])
       console.log('Payment Success');
       return NextResponse.json({ message: 'Payment Success' });
     }else if(res.status === 'PENDING'){

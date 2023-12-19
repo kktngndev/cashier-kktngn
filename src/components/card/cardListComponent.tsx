@@ -29,7 +29,7 @@ const DummyBestSeller = [
   }
 ]
 
-export default function CardListComponent() {
+export function CardListComponent() {
   return (
     <div className='p-5 w-72 h-fit rounded-2xl font-semibold flex flex-col bg-hacienda-700 text-white'>
       Best Seller hari ini

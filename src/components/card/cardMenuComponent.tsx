@@ -9,7 +9,7 @@ type Props = {
   price: number | string
 }
 
-export default function CardMenuComponent({ name, price }: Props) {
+export function CardMenuComponent({ name, price }: Props) {
   const [cartItem, setCartItem] = useRecoilState(cartItemAtom) as any[]
   const cartIndex = cartItem.findIndex((cart: any) => cart.nama_produk === name)
   const [isAdded, setIsAdded] = useState(false)
