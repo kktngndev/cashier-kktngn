@@ -9,10 +9,6 @@ import { LoaderComponent } from '@/components'
 export function ListCardCategoriesTrxComponent() {
   const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
 
-  function numberWithCommas(x: number) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-  }
-
   const { data, isLoading } = useQuery({
     queryKey: ['produk'],
     queryFn: async () => {
