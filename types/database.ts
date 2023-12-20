@@ -70,6 +70,7 @@ export interface Database {
           id_transaksi: string
           metode_pembayaran: string | null
           status_transaksi: string
+          total_pembayaran: number
         }
         Insert: {
           created_at?: string
@@ -78,6 +79,7 @@ export interface Database {
           id_transaksi: string
           metode_pembayaran?: string | null
           status_transaksi: string
+          total_pembayaran: number
         }
         Update: {
           created_at?: string
@@ -86,6 +88,7 @@ export interface Database {
           id_transaksi?: string
           metode_pembayaran?: string | null
           status_transaksi?: string
+          total_pembayaran?: number
         }
         Relationships: []
       }
