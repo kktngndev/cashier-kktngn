@@ -1,5 +1,5 @@
 import { Key } from 'react'
-import { CardLabelComponent } from '@/components/card'
+import { CardLabelComponent } from '@/components'
 
 export async function HeaderTrx() {
   const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getKategoriData`).then(res => res.json())

@@ -2,7 +2,7 @@
 import { useCallback } from "react"
 import { useRecoilState } from "recoil"
 import { useState } from "react"
-import { cartItemAtom, cartTotalAtom } from "../../../atoms/cartAtom"
+import { cartItemAtom, cartTotalAtom } from "../../../atoms"
 
 type Props = {
   name: string,

@@ -1,13 +1,12 @@
 'use client'
 import { useMemo } from 'react'
-import { CardMenuComponent } from '@/components/card'
 import { useQuery } from '@tanstack/react-query'
-import { useRecoilState } from 'recoil'
-import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
-import { LoaderComponent } from '@/components'
+import { useRecoilValue } from 'recoil'
+import { checkedCategoryAtom } from '../../../atoms'
+import { LoaderComponent, CardMenuComponent } from '@/components'
 
 export function ListCardCategoriesTrxComponent() {
-  const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
+  const checkedCategory = useRecoilValue(checkedCategoryAtom)
 
   const { data, isLoading } = useQuery({
     queryKey: ['produk'],
