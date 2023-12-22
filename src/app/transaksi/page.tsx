@@ -1,16 +1,11 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
-import { Navbar } from '@/components/navbar'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
-import { cartItemAtom, cartTotalAtom } from '../../../atoms/cartAtom'
+import { useRouter } from 'next/navigation'
+import { checkedCategoryAtom, cartItemAtom, cartTotalAtom } from '../../../atoms'
 import { SyncLoader } from 'react-spinners'
 import { v4 as uuidv4 } from 'uuid'
-import { ListCardCategoriesTrxComponent } from '@/components/list'
-import { CardLabelComponent } from '@/components/card'
-import { CardCartComponent } from '@/components/card'
-import { ModalComponent } from '@/components'
-import { CashPaymentComponent } from '@/components'
+import { Navbar, CardLabelComponent, CardCartComponent, ModalComponent, CashPaymentComponent, ListCardCategoriesTrxComponent } from '@/components'
 
 export default function Page() {
   const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
@@ -20,6 +15,8 @@ export default function Page() {
   const [modal, setModal] = useState(false)
   const [isProcess, setIsProcess] = useState(false)
   const total = useRecoilValue(cartTotalAtom)
+
+  const router = useRouter()
 
   const cashlessPayment = useCallback(async () => {
     setIsProcess(true)
@@ -40,17 +37,34 @@ export default function Page() {
         .catch(err => console.error(err))
 
       if (payment) {
-        console.log(payment);
-
         window.open(payment.payment_url, '_blank')
+        const params = {
+          id: name,
+          daftar_transaksi: cartItem,
+        }
+        const getTransactionData = setInterval(async () => {
+          const getTransaction = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/transaction?id=${name}`).then(res => res.json())
+          console.log(getTransaction);
+          if (getTransaction.length > 0) {
+            const updateData = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/transaction/update`, {
+              method: 'PUT',
+              body: JSON.stringify(params),
+            }).then(res => res.json()).catch(err => console.error(err))
+            if(updateData){
+              clearInterval(getTransactionData)
+              setIsProcess(false)
+              setCartItem([])
+              router.push('status?status=success&method=qris')
+            }
+          }
+        }, 3000)
       }
-      setIsProcess(false)
     }
     else {
       alert('Item Kosong, Silahkan Pilih Item Terlebih Dahulu')
       setIsProcess(false)
     }
-  }, [cartItem, total])
+  }, [cartItem, total, setCartItem, router])
 
   const cashPayment = useCallback(async () => {
     setIsProcess(true)
@@ -70,8 +84,6 @@ export default function Page() {
     setModal(false)
     setIsProcess(false)
   }
-
-
 
   useEffect(() => {
     async function getCategoryData() {
