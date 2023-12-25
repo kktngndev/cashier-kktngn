@@ -8,7 +8,7 @@ type Props = {
   icon?: React.ReactNode
 }
 
-export default function CardComponent({ classname, text, text2, icon }: Props) {
+export function CardComponent({ classname, text, text2, icon }: Props) {
   return (
     <div className={`w-72 h-48 p-5 rounded-2xl font-semibold flex flex-wrap flex-col justify-between items-start ${classname}`}>
       <div className='h-12 w-12 bg-white rounded-full flex justify-center items-center'>

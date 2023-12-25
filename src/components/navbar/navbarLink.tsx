@@ -10,7 +10,7 @@ type NavbarLinkProps = {
   link: string
 }
 
-export default function NavbarLink({ handleClick, text, icon, link }: NavbarLinkProps) {
+export function NavbarLink({ handleClick, text, icon, link }: NavbarLinkProps) {
   const [isActive, setIsActive] = useState(false);
   const pathname = usePathname();
 

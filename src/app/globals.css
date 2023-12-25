@@ -45,3 +45,21 @@ input.metodeBayarRadio[type="radio"]:checked + .metodeBayarLabel{
   @apply bg-hacienda-600 text-hacienda-950;
 }
 
+.rdt_Table{
+  @apply mt-7 border shadow rounded-xl overflow-hidden
+}
+
+.rdt_TableHeadRow{
+  @apply font-bold text-lg
+}
+
+.rdt_TableCol{
+  @apply bg-hacienda-950 text-white px-4 py-2
+}
+
+.rdt_TableCell{
+  @apply font-semibold
+}
+
+
+

@@ -2,14 +2,14 @@
 import { useCallback } from "react"
 import { useRecoilState } from "recoil"
 import { useState } from "react"
-import { cartItemAtom, cartTotalAtom } from "../../../atoms/cartAtom"
+import { cartItemAtom, cartTotalAtom } from "../../../atoms"
 
 type Props = {
   name: string,
   price: number | string
 }
 
-export default function CardMenuComponent({ name, price }: Props) {
+export function CardMenuComponent({ name, price }: Props) {
   const [cartItem, setCartItem] = useRecoilState(cartItemAtom) as any[]
   const cartIndex = cartItem.findIndex((cart: any) => cart.nama_produk === name)
   const [isAdded, setIsAdded] = useState(false)

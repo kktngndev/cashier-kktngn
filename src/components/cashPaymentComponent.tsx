@@ -1,16 +1,22 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useRecoilValue } from 'recoil'
-import { cartTotalAtom } from '../../atoms/cartAtom'
+import { useRecoilValue, useRecoilState } from 'recoil'
+import { v4 as uuidv4 } from 'uuid'
+import { useRouter } from 'next/navigation'
+import { cartTotalAtom, cartItemAtom, paymentAtom } from '../../atoms'
+import { SyncLoader } from 'react-spinners'
 
 type Props = {
   onClick: () => void
 }
 
-export default function CashPaymentComponent({ onClick }: Props) {
+export function CashPaymentComponent({ onClick }: Props) {
+  const router = useRouter()
   const total = useRecoilValue(cartTotalAtom)
-  const [cash, setCash] = useState(0)
+  const [cartItem, setCartItem] = useRecoilState(cartItemAtom) as any[]
+  const [cash, setCash] = useRecoilState(paymentAtom)
   const [change, setChange] = useState(0)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const handleCash = (e: any) => {
     cash > 0 ? setChange(cash - total) : setChange(0)
@@ -24,9 +30,33 @@ export default function CashPaymentComponent({ onClick }: Props) {
     }
   }
 
+  const handleTransaction = async () => {
+    setIsProcessing(!isProcessing)
+    const id = uuidv4()
+    const item = {
+      id,
+      daftar_transaksi: cartItem,
+      metode_pembayaran: 'tunai',
+      total_pembayaran: total,
+      status_transaksi: 'SUCCESSFUL'
+    }
+
+    const transaction = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/transaction/create`, {
+      method: 'POST',
+      body: JSON.stringify(item)
+    }).then(res => res.json()).catch(err => console.error(err))
+
+    if (transaction) {
+      setChange(0)
+      setCartItem([])
+      setIsProcessing(!isProcessing)
+      router.push('status?status=success&method=cash')
+    }
+  }
+
   useEffect(() => {
     cash > 0 ? setChange(cash - total) : setChange(0)
-  },[cash, total])
+  }, [cash, total])
 
   return (
     <div className='h-[90%] w-[90%] bg-white relative grid grid-cols-2'>
@@ -41,11 +71,18 @@ export default function CashPaymentComponent({ onClick }: Props) {
           <p className='text-2xl'>Terbayar:</p>
           <p className='text-3xl'>Rp. {cash}</p>
         </div>
-        <div className='border-t border-hacienda-900 py-5 flex items-center justify-between'>
+        <hr className='bg-hacienda-950 h-1' />
+        <div className=' py-5 flex items-center justify-between'>
           <p className='text-2xl font-semibold'>Kembali:</p>
           <p className='text-3xl'>Rp. {change}</p>
         </div>
-        <button className='w-full h-16 bg-hacienda-700 rounded-xl shadow-xl font-bold text-white border-2 border-hacienda-500 transition-colors hover:bg-hacienda-600 hover:text-hacienda-950'>Submit</button>
+        {
+          !isProcessing ?
+            <button className='w-full h-16 bg-hacienda-700 rounded-xl shadow-xl font-bold text-white border-2 border-hacienda-500 transition-colors hover:bg-hacienda-600 hover:text-hacienda-950' onClick={handleTransaction}>Submit</button> 
+            :
+            <button disabled className='w-full h-16 bg-hacienda-600 rounded-xl shadow-xl font-bold text-white border-2 border-hacienda-500 transition-colors'><SyncLoader color='#fff' size={8} /></button>
+        }
+
       </div>
       <div className='bg-hacienda-200 p-7'>
         <div className=' mt-6 flex flex-col gap-8 items-center justify-center'>

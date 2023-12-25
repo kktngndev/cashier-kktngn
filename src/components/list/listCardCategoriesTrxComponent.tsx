@@ -1,17 +1,12 @@
 'use client'
 import { useMemo } from 'react'
-import CardMenuComponent from '../card/cardMenuComponent'
 import { useQuery } from '@tanstack/react-query'
-import { useRecoilState } from 'recoil'
-import { checkedCategoryAtom } from '../../../atoms/categoryAtom'
-import LoaderComponent from '../loaderComponent'
+import { useRecoilValue } from 'recoil'
+import { checkedCategoryAtom } from '../../../atoms'
+import { LoaderComponent, CardMenuComponent } from '@/components'
 
-export default function ListCardCategoriesTrxComponent() {
-  const [checkedCategory, setCheckedCategory] = useRecoilState(checkedCategoryAtom)
-
-  function numberWithCommas(x: number) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-  }
+export function ListCardCategoriesTrxComponent() {
+  const checkedCategory = useRecoilValue(checkedCategoryAtom)
 
   const { data, isLoading } = useQuery({
     queryKey: ['produk'],
@@ -38,7 +33,7 @@ export default function ListCardCategoriesTrxComponent() {
         isLoading && <LoaderComponent />
       }
       {
-        data && filteredList.map((item: { nama_produk: string, harga_produk: number}, index:number) => (
+        data && filteredList.map((item: { nama_produk: string, harga_produk: number }, index: number) => (
           <CardMenuComponent key={index} name={item.nama_produk} price={item.harga_produk} />
         ))
       }

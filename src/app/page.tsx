@@ -1,33 +1,23 @@
-import type { Metadata } from 'next'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import Navbar from '@/components/navbar/navbar'
-import Greetings from '@/utils/greetings'
+'use client'
+import { useEffect } from 'react'
+import { Greetings, supabase } from '@/utils'
+import { useRouter } from 'next/navigation'
 import { MdPointOfSale } from 'react-icons/md'
 import { RiCupFill } from 'react-icons/ri'
 import moment from 'moment'
 import 'moment/locale/id'
-import { Database } from '../../types/database'
-import CardChartComponent from '@/components/card/cardChartComponent'
-import CardListComponent from '@/components/card/cardListComponent'
-import CardComponent from '@/components/card/cardComponent'
+import { CardChartComponent, CardComponent, CardListComponent, Navbar } from '@/components'
 
-export const metadata: Metadata = {
-  title: 'Cashier',
-  description: 'Main menu',
-}
+export default function Home() {
+  const router = useRouter()
 
-export default async function Home() {
-  const cookiesStore = cookies()
-  const supabase = createServerComponentClient<Database>({
-    cookies: () => cookiesStore,
-  })
-
-  const { data: { session } } = await supabase.auth.getSession()
-
-  if (!session) {
-    window.location.href = '/login'
-  }
+  useEffect(() => {
+    supabase.auth.getSession().then(session => {
+      if (!session) {
+        router.push('/login')
+      }
+    })
+  }, [router])
 
   return (
     <div className="flex flex-1">
@@ -54,7 +44,7 @@ async function Dashboard() {
     headers: {
       'Content-Type': 'application/json',
     }
-  }).then(res => res.json());  
+  }).then(res => res.json());
 
   return (
     <div className='mt-7 flex flex-col gap-6'>
