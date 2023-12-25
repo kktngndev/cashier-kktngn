@@ -73,7 +73,7 @@ export default function Page() {
   return (
     <div className='flex flex-1'>
       <Navbar />
-      <div className="h-screen w-screen p-5">
+      <div className="h-screen w-screen overflow-auto p-5">
         <h1 className='font-bold text-4xl text-hacienda-900'>Laporan Transaksi</h1>
         {isLoading && <LoaderComponent />}
         <div className='flex justify-end items-center gap-3 mt-3'>
