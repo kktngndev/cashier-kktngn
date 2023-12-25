@@ -1,20 +1,23 @@
 'use client'
-import { useState, useEffect, useMemo, ReactNode } from 'react'
+import { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { LoaderComponent, Navbar } from '@/components'
+import { debounce } from 'lodash'
 import DataTable, { TableColumn } from 'react-data-table-component'
+import { FaSearch } from "react-icons/fa";
 import moment from 'moment'
 import 'moment/locale/id'
 
 type DataRow = {
   id_transaksi: string,
   metode_pembayaran: string,
-  status_transaksi:  JSX.Element,
+  status_transaksi: JSX.Element,
   total_pembayaran: number,
   created_at: string
 }
 
 export default function Page() {
+  const [search, setSearch] = useState('')
 
   const { data, isLoading } = useQuery({
     queryKey: ['transaksi'],
@@ -53,16 +56,34 @@ export default function Page() {
     }
   ], [])
 
+  const debounceSearch = debounce((e: any) => {
+    setSearch(e.target.value)
+  }, 1000)
+    
+
+  let searchList = useMemo(() => {
+    return data?.filter((item: any) => {
+      if (search === '') {
+        return item
+      }
+      return item?.id_transaksi?.toLowerCase().includes(search.toLowerCase())
+    })
+  }, [search, data])
+
   return (
     <div className='flex flex-1'>
       <Navbar />
       <div className="h-screen w-screen p-5">
         <h1 className='font-bold text-4xl text-hacienda-900'>Laporan Transaksi</h1>
         {isLoading && <LoaderComponent />}
+        <div className='flex justify-end items-center gap-3 mt-3'>
+          <span className='text-2xl'><FaSearch /></span>
+          <input onChange={e => debounceSearch(e)} className='border border-gray-400 rounded-full px-3 py-2 w-96 font-semibold' placeholder='Cari ID Transaksi' />
+        </div>
         {
           data &&
           <DataTable
-            data={data}
+            data={searchList}
             columns={columns}
             pagination
           />
