@@ -1,0 +1,13 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDotEnv": [".env.local", ".env"],
+  "globalDependencies": [".env", "tsconfig.json"],
+  "pipeline": {
+    "build": {
+      "outputs": [".next/**", "!.next/cache/**"],
+      "dotEnv": [".env.local", ".env"],
+      "dependsOn": ["^build"]
+    },
+    "type-check": {}
+  }
+}
