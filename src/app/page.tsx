@@ -46,11 +46,13 @@ async function Dashboard() {
     }
   }).then(res => res.json());
 
+  const transaction = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/report/getTransactionToday`, {}).then(res => res.json());
+
   return (
     <div className='mt-7 flex flex-col gap-6'>
       <div className='flex gap-4'>
         <CardComponent classname='bg-hacienda-700 w-[400px] text-white' icon={<MdPointOfSale />} text='Pendapatan hari ini' text2={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(balance.total_income)} />
-        <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={<RiCupFill />} text='Jumlah pesanan hari ini' text2='196' />
+        <CardComponent classname=' bg-gray-300 text-hacienda-900' icon={<RiCupFill />} text='Jumlah pesanan hari ini' text2={transaction.total} />
       </div>
       <div className='flex gap-4'>
         <CardChartComponent />
