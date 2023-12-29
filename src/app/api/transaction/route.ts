@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   const idTrx = req.nextUrl.searchParams.get('id');
 
   if (!idTrx) {
-    const { data: transaksi, error } = await supabase.from('transaksi').select('*')
+    const { data: transaksi, error } = await supabase.from('transaksi').select('*').order('created_at', { ascending: false })
 
     if (transaksi) {
       return NextResponse.json(transaksi);
