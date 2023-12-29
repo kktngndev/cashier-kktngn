@@ -2,7 +2,7 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useRecoilValue } from 'recoil'
-import { checkedCategoryAtom } from '../../../atoms'
+import { checkedCategoryAtom } from '@atoms/index'
 import { LoaderComponent, CardMenuComponent } from '@/components'
 
 export function ListCardCategoriesTrxComponent() {

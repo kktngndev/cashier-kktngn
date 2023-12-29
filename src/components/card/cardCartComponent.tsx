@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { cartItemAtom, cartTotalAtom} from '../../../atoms'
+import { cartItemAtom, cartTotalAtom} from '@atoms/index'
 
 type Props = {
   item: { nama_produk: string, harga_produk: number }

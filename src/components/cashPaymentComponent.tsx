@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/navigation'
-import { cartTotalAtom, cartItemAtom, paymentAtom } from '../../atoms'
+import { cartTotalAtom, cartItemAtom, paymentAtom } from '@atoms/index'
 import { SyncLoader } from 'react-spinners'
 
 type Props = {

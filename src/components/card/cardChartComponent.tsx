@@ -2,16 +2,18 @@
 import { useState, useEffect } from 'react'
 import Chart from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2'
+import { LoaderComponent } from '@/components'
 
 Chart.register()
 
 export function CardChartComponent() {
+  const [isLoading, setIsLoading] = useState(true)
   const [chartData, setChartData] = useState({
-    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+    labels: [],
     datasets: [
       {
         label: 'Penjualan',
-        data: [0, 0, 0, 0, 0, 0, 0], // Initial data placeholder
+        data: [], // Initial data placeholder
         backgroundColor: '#826c11',
         borderColor: '#826c11',
       },
@@ -22,7 +24,7 @@ export function CardChartComponent() {
     const fetchData = async () => {
       try {
         const orderData = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/report/getLastSevenDaysOrder`, {}).then(res => res.json());
-        
+
         if (orderData && orderData.data && orderData.labels) {
           setChartData({
             labels: orderData.labels,
@@ -36,6 +38,7 @@ export function CardChartComponent() {
             ],
           });
         }
+        setIsLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -48,16 +51,23 @@ export function CardChartComponent() {
     <div className='w-[750px] h-fit bg-hacienda-100 font-semibold rounded-xl p-5'>
       <h1 className='text-xl text-hacienda-900'>Penjualan per hari</h1>
       <div className='h-72 w-full rounded-xl mt-5 flex justify-center items-center'>
-        <Bar
-          data={chartData}
-          options={{
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          }}
-        />
+        {
+          isLoading ? <LoaderComponent /> :
+            (
+              <>
+                <Bar
+                  data={chartData}
+                  options={{
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                    },
+                  }}
+                />
+              </>
+            )
+        }
       </div>
     </div>
   )
