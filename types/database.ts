@@ -92,6 +92,35 @@ export interface Database {
         }
         Relationships: []
       }
+      users: {
+        Row: {
+          email: string | null
+          id: string
+          image: string | null
+          name: string | null
+        }
+        Insert: {
+          email?: string | null
+          id: string
+          image?: string | null
+          name?: string | null
+        }
+        Update: {
+          email?: string | null
+          id?: string
+          image?: string | null
+          name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
