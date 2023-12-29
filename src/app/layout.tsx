@@ -1,9 +1,9 @@
-'use client'
 import './globals.css'
 import { Montserrat } from 'next/font/google'
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
-import RecoilContextProvider from '../utils/recoilContextProvider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Providers from '@/utils/providers'
+import { auth } from 'main/auth'
+import { redirect } from 'next/navigation'
+import moment from 'moment'
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -11,18 +11,20 @@ type Props = {
   children: React.ReactNode
 }
 
-const queryClient = new QueryClient()
 
-export default function RootLayout({ children }: Props) {
+export default async function RootLayout({ children }: Props) {
+  const session = await auth()
+
+  if(!session?.supabaseAccessToken && !session?.user || moment(session?.expires).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')) {
+    redirect('/api/auth/signin')
+  }
+  
   return (
     <html lang="en">
       <body className={`${montserrat.className}`}>
-        <ProgressBar color="#6f5814" height='4px' shallowRouting options={{ showSpinner: false }} />
-        <QueryClientProvider client={queryClient}>
-          <RecoilContextProvider>
-            {children}
-          </RecoilContextProvider>
-        </QueryClientProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )
