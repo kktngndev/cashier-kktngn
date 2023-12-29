@@ -3,6 +3,7 @@
   "globalDotEnv": [".env.local", ".env"],
   "globalDependencies": [".env", "tsconfig.json"],
   "pipeline": {
+    "lint": {},
     "build": {
       "outputs": [".next/**", "!.next/cache/**"],
       "dotEnv": [".env.local", ".env"],
