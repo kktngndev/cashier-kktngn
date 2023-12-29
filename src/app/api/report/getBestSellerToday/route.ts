@@ -3,12 +3,12 @@ import { supabase } from "@/utils/supabase";
 import moment from "moment";
 
 export async function GET() {
-  const { data, error } = await supabase.from('transaksi').select(' daftar_transaksi, created_at').gte('created_at', moment().format('YYYY-MM-DD'));
+  const { data, error } = await supabase.from('transaksi').select('daftar_transaksi, created_at').gte('created_at', moment().format('YYYY-MM-DD'));
 
   if (data) {
     const fixedData = data?.flatMap((item: any) => item.daftar_transaksi);
 
-    const productQuantityMap = fixedData.reduce((acc, product) => {
+    const productQuantityMap: Record<string, number> = fixedData.reduce((acc, product) => {
       const { nama_produk, quantity } = product;
       acc[nama_produk] = (acc[nama_produk] || 0) + quantity;
       return acc;
