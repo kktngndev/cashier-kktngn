@@ -7,7 +7,7 @@ type NavbarLinkProps = {
   handleClick?: () => void
   text?: string
   icon?: React.ReactNode
-  link: string
+  link?: string
 }
 
 export function NavbarLink({ handleClick, text, icon, link }: NavbarLinkProps) {
@@ -19,13 +19,28 @@ export function NavbarLink({ handleClick, text, icon, link }: NavbarLinkProps) {
   }, [pathname, link])
 
   return (
-    <button onClick={handleClick}>
-      <Link href={link} className={`${isActive ? `bg-hacienda-100 border-hacienda-500`: `border-hacienda-300`} h-24 w-24 flex flex-col items-center justify-center rounded-xl text-sm text-hacienda-900 font-semibold border-2 hover:bg-hacienda-800 hover:text-hacienda-50 transition-all`}>
+    !link ? (
+      <button className={`${isActive ? `bg-hacienda-100 border-hacienda-500` : `border-hacienda-300`} h-24 w-24 flex flex-col items-center justify-center rounded-xl text-sm text-hacienda-900 font-semibold border-2 hover:bg-hacienda-800 hover:text-hacienda-50 transition-all`} onClick={handleClick}> {
+        !link ?
+          <div className='text-3xl'>
+            {icon}
+          </div>
+          :
+          <Link href={link} >
+            <div className='text-3xl'>
+              {icon}
+            </div>
+          </Link>
+      }
+        {text}
+      </button>
+    ) : (
+      <Link href={link} className={`${isActive ? `bg-hacienda-100 border-hacienda-500` : `border-hacienda-300`} h-24 w-24 flex flex-col items-center justify-center rounded-xl text-sm text-hacienda-900 font-semibold border-2 hover:bg-hacienda-800 hover:text-hacienda-50 transition-all`}>
         <div className='text-3xl'>
           {icon}
         </div>
         {text}
       </Link>
-    </button>
+    )
   )
 }
