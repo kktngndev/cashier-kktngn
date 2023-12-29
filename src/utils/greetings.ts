@@ -1,7 +1,9 @@
 import moment from "moment";
 
 export function Greetings(){
-  let hours = parseInt(moment().local().format('HH'));
+  const localTimezoneOffset = -new Date().getTimezoneOffset() / 60;
+  let localTime = moment().utcOffset(localTimezoneOffset);
+  let hours = parseInt(localTime.format('HH'));
 
   if(hours >= 0 && hours <= 11){
     return "Selamat Pagi";
