@@ -3,14 +3,20 @@ import { useSearchParams } from 'next/navigation'
 import { FaCheck, FaChevronLeft } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { ImCross } from "react-icons/im";
-import { useRecoilValue } from 'recoil'
-import { cartTotalAtom, paymentAtom } from '../../../atoms'
+import { useRecoilState } from 'recoil'
+import { cartTotalAtom, paymentAtom } from '@atoms/index'
 
 export default function Page() {
   const params = useSearchParams()
   const router = useRouter()
-  const totalPayment = useRecoilValue(cartTotalAtom)
-  const payment = useRecoilValue(paymentAtom)
+  const [totalPayment, setTotalPayment] = useRecoilState(cartTotalAtom)
+  const [payment, setPayment] = useRecoilState(paymentAtom)
+
+  const handleBack = () => {
+    router.push('transaksi')
+    setTotalPayment(0)
+    setPayment(0)
+  }
 
   return (
     <div className='h-screen w-screen flex items-center justify-center bg-hacienda-100 font-bold'>
@@ -44,7 +50,7 @@ export default function Page() {
             <p>Rp. {params.get('method') === 'qris' ? '0' : payment - totalPayment}</p>
           </div>
         </div>
-        <button onClick={() => router.push('transaksi')} className='flex gap-5 items-center justify-center'><FaChevronLeft/> Kembali Ke Menu Transaksi</button>
+        <button onClick={handleBack} className='flex gap-5 items-center justify-center'><FaChevronLeft/> Kembali Ke Menu Transaksi</button>
       </div>
     </div>
   )
