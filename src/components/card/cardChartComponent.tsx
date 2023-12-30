@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Chart from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2'
 import { LoaderComponent } from '@/components'
@@ -7,13 +7,12 @@ import { LoaderComponent } from '@/components'
 Chart.register()
 
 export function CardChartComponent() {
-  const [isLoading, setIsLoading] = useState(true)
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
       {
         label: 'Penjualan',
-        data: [], // Initial data placeholder
+        data: [],
         backgroundColor: '#826c11',
         borderColor: '#826c11',
       },
@@ -38,7 +37,6 @@ export function CardChartComponent() {
             ],
           });
         }
-        setIsLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -52,21 +50,20 @@ export function CardChartComponent() {
       <h1 className='text-xl text-hacienda-900'>Penjualan per hari</h1>
       <div className='h-72 w-full rounded-xl mt-5 flex justify-center items-center'>
         {
-          isLoading ? <LoaderComponent /> :
-            (
-              <>
-                <Bar
-                  data={chartData}
-                  options={{
-                    scales: {
-                      y: {
-                        beginAtZero: true,
-                      },
+          (
+            <Suspense fallback={<LoaderComponent />}>
+              <Bar
+                data={chartData}
+                options={{
+                  scales: {
+                    y: {
+                      beginAtZero: true,
                     },
-                  }}
-                />
-              </>
-            )
+                  },
+                }}
+              />
+            </Suspense>
+          )
         }
       </div>
     </div>
