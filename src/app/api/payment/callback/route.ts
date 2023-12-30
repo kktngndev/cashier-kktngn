@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         metode_pembayaran: res.sender_bank,
         total_pembayaran: res.amount,
       }
-      const addData = await fetch(`https://85sx9k0n-3000.asse.devtunnels.ms/api/transaction/create`, {
+      const addData = await fetch(`https://cashier-kktngn-git-dev-kakitangandev.vercel.app/api/transaction/create`, {
         method: 'POST',
         body: JSON.stringify(params),
       }).then(res => res.json());
