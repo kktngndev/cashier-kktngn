@@ -5,8 +5,7 @@
   "pipeline": {
     "lint": {},
     "build": {
-      "outputs": [".next/**", "!.next/cache/**"],
-      "dotEnv": [".env.local", ".env"],
+      "outputs": [".next/**", "!.next/cache/**", "node_modules/**", "tsconfig.json"],
       "dependsOn": ["^build"]
     },
     "type-check": {}
